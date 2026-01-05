@@ -1,16 +1,17 @@
 ### config yaml for Spatial transcriptomics
-project_name: DICE_ADJACENT2
+project_name: example1
 output_dir: "/home/fcastaneda/fcastaneda-temp/rnaseq-sc-standar/biopBal_Sara_2024/spatial_pilot_5k/results/v2/"
 # path to the Cell Ranger ouput from IGM
-input_expression: "/home/fcastaneda/fcastaneda/data/SpatialTrans/5k_pilot/igm-storage.ucsd.edu/DICE_LUNG_02/20250524_XETG00386_0067916/output-XETG00386__0067916__Region_1__20250524__202718/"
+input_expression: "/home/fcastaneda/fcastaneda/data/SpatialTrans/5k_pilot/igm-storage.ucsd.edu/DICE_LUNG_02/20250524_XETG00386_0067916/output-XETG00386__0067916__Region_1__20250524__202718/" #Xenium Ranger's output folder
 metadata:
-  # - "/home/fcastaneda/fcastaneda-temp/rnaseq-sc-standar/biopBal_Sara_2024/spatial_pilot_5k/results/v2/DICE_LungAdjacent/30pct30pc/metadata_30pct30pc.rds"
-  # - "/mnt/bioadhoc/Groups/vd-vijay/fcastaneda/fcastaneda-temp/rnaseq-sc-standar/biopBal_Sara_2024/spatial_pilot_5k/info/DICE_cells_class_TMA.csv" #The tissue metadata always have to have a column called "orig.TMA_core" and the cell's ids in the first row 
+   #- "/home/fcastaneda/fcastaneda-temp/rnaseq-sc-standar/biopBal_Sara_2024/spatial_pilot_5k/results/v2/DICE_LungAdjacent/30pct30pc/metadata_30pct30pc.rds"
+   - "/mnt/bioadhoc/Groups/vd-vijay/fcastaneda/fcastaneda-temp/rnaseq-sc-standar/biopBal_Sara_2024/spatial_pilot_5k/info/example_cells_class_TMA.csv" # Tissue metadata. It always has to have a column called "orig.TMA_core" and the cell's ids in the first row. 
 metadata_donor:
-  # - "/mnt/bioadhoc/Groups/vd-vijay/fcastaneda/fcastaneda-temp/rnaseq-sc-standar/biopBal_Sara_2024/spatial_pilot_5k/info/DICE_adjacent2_metadata_donor.csv~TMA_core"
+   - "/mnt/bioadhoc/Groups/vd-vijay/fcastaneda/fcastaneda-temp/rnaseq-sc-standar/biopBal_Sara_2024/spatial_pilot_5k/info/example_metadata_donor.csv~TMA_core"
 filtering:
   subset:
-    expr: "nCount_Xenium > 3"
+    expr: "nCount_Xenium > 3" # Filters are cell based.
+    #expre: "nFeatures >3" #Extra filters would be taken in count if a key with the "^expr" pattern is found.
   nSamples_expressed: 0.001 # % of cells in which that gene is present
 regress_var: [nCount_Xenium]
 norm: LogNormalize
