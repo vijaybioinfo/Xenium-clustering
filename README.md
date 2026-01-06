@@ -22,5 +22,4 @@ This pipeline is fully compatible with the Slurm HPC queue manager. Please modif
 
 ### Manteiners: 
 Please contact:
-Francisco Emmanuel Castaneda Castro (fcastaneda@lji.org)
-Donaldo sosa García (donaldo@lji.org)
+Francisco Emmanuel Castaneda Castro (fcastaneda@lji.org) or Donaldo sosa García (donaldo@lji.org)
