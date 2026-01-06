@@ -11,6 +11,8 @@
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user={username}@lji.org
 
+# Please modify all above accordingly to your HPC queue manager
+
 ## See https://www.msi.umn.edu/slurm/pbs-conversion to pass PBS to SBATCH (Slurm) variable for torque
 # This job structure is based of:
 # https://learn.lji.org/display/BIODOCS/Creating+a+Job
@@ -53,7 +55,7 @@ echo -----------------------------------------------------------------
 ######################################################################
 
 # The working directory for the job is inside the scratch directory
-WORKDIR=/mnt/BioScratch/${USER}/{cellranger}/{sampleid}_Slurm_${SLURM_JOB_ID}
+WORKDIR=/mnt/BioScratch/${USER}/{cellranger}/{sampleid}_Slurm_${SLURM_JOB_ID} #Modify accordingly to your HPC
 
 # This is the directory on lysine where your project is stored
 PROJDIR={outpath}
