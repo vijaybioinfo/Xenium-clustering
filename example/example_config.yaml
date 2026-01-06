@@ -35,4 +35,4 @@ exec: /mnt/hpc-apps/R/4.3.3/bin/Rscript #Rscript executable
 pipeline: /path/to/pipeline/Xenium-clustering/ 
 R_module: R/4.3.3 #if defined, it will use this module version to run the analysis, if not it will use your default
 cluster_config: /home/fcastaneda/bin/spatial_clustering/cluster_slurm.json #HPC slurm resources definition
-conda_env: clustering_new #Compatible with Ciro's clustering env
+conda_env: clustering #Compatible with single-cell clustering env
