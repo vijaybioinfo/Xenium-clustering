@@ -1,0 +1,5 @@
+TMA_core,donor,activation,tissue
+T1,D15772,high,control
+T2,D15772,high,disease
+T3,D17362,low,control
+T4,D2753,low,disease

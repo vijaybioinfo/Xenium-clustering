@@ -1,0 +1,38 @@
+### config yaml for Spatial transcriptomics
+project_name: example ### This name will be used as an identifier job id, and as the  final output folder name
+output_dir: "/mnt/bioadhoc/Groups/vd-vijay/fcastaneda/fcastaneda-temp/rnaseq-sc-standar/preethi_projects/spatial/results/clustering" #output directory
+input_expression: "path/to/xeniumranger/outs/" # path to the XeniumRanger ouput folder
+metadata:
+  - "/path/to/example_metadata_cells_TMA.csv" #This cell-based metadata needs two columns obligatory  "cell_id" (cells id accordingly to xenium ranger output) and "orig.TMA_core" (tissue identifier id). You can add extra columns if you want but only the ones starting with "orig." will be used for proportion plots". #Document this line if you don't want a cell metadata to be included
+metadata_donor:
+  - "/path/to/PBT_slide1_example_metadata_donor.csv~TMA_core" #Tissue id-based metadata. If you want to add extra metadata to the cells based on the tissue id. The character after the ~ will be used as the column name used to merge this table with the cell-based metadata. So in this case will be 'TMA_core'. All columns in this table will have a suffix 'orig.'for further steps. #Document this line if you don't want a cell metadata to be included
+filtering:
+  subset:
+    expr: "nCount_Xenium > 10"
+    #expre: "orig.status == 'high'" #Extra filters can be taken in count if a key with the "^expr" pattern is found.
+    #expree: "nFeatures_Xenium > 10"
+  nSamples_expressed: 0.001 # Keep only the genes present in at least this porportion of cells
+regress_var: [nCount_Xenium] # Variables to regress in the ScaleData function
+norm: LogNormalize
+variable_features:
+  file: "no_file" #path/to/file_supervised.csv #Take this list of genes to perform a supervised clustering
+  method: vst
+  nfeatures: 2000
+  percent: [10, 20, 25, 30]  # Percent of high varible genes to be used. Iterative.
+  mean.cutoff: [0.01, 8]
+  dispersion.cutoff: [1, Inf]
+resolution: [0.1, 0.2, 0.4, 0.6, 0.8] # Resolutions for FindClusters function
+dim_reduction:
+  base: {type: pca, n_comp: 40, chosen_comp: [15,20,25,30]} # iterated: # PCAs to be used
+  umap: {n.neighbors: 10, min.dist: 0.1} #Parameters handled for RunUMAP
+markers:
+  select: snn_res. # pattern in the metadata's columns. Redundant
+  test: MAST
+  avg_logFC: 0.25
+  p_val_adj: 0.05
+  to_plot: ['BAP1', 'WT1', 'PDCD1', 'CD3E', 'CD8A', 'CD8B', 'CD4', 'LAG3', 'CTLA4', 'FOXP3', 'SOX2', 'MSI1', ITGAE]
+exec: /mnt/hpc-apps/R/4.3.3/bin/Rscript #Rscript executable
+pipeline: /home/fcastaneda/bin/spatial_clustering/
+R_module: R/4.3.3 #if defined, it will use this module version to run the analysis, if not it will use your default
+cluster_config: /home/fcastaneda/bin/spatial_clustering/cluster_slurm.json #HPC resources definition
+conda_env: clustering_new #Compatible with Ciro's clustering env
