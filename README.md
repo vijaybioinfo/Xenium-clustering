@@ -16,3 +16,7 @@ After you've added the necessary information to the YAML file you can call the p
 ```
 sh /path/to/Xenium-clustering/run.sh -y /path/to/your/yaml/example_config.yaml
 ```
+
+### Attention: 
+This pipeline is fully compatible with the Slurm HPC queue manager. Please modify the routine_template_emma_Slurm_Spatial_Clustering.sh, cluster_slurm.json and slurm folder accordingly
+
