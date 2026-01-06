@@ -20,3 +20,7 @@ sh /path/to/Xenium-clustering/run.sh -y /path/to/your/yaml/example_config.yaml
 ### Attention: 
 This pipeline is fully compatible with the Slurm HPC queue manager. Please modify the routine_template_emma_Slurm_Spatial_Clustering.sh, cluster_slurm.json and slurm folder accordingly
 
+### Manteiners: 
+Please contact:
+Francisco Emmanuel Castaneda Castro (fcastaneda@lji.org)
+Donaldo sosa García (donaldo@lji.org)
