@@ -1,5 +1,5 @@
 ### Conda enviroment:
-This pipeline is compatible with the conda enviroment used in our [in-house clustering pipeline](https://github.com/vijaybioinfo/clustering), if its already available, please use it, otherwise follow these instructions:
+This pipeline is compatible with the conda enviroment used in our [in-house clustering pipeline](https://github.com/vijaybioinfo/clustering). If its already available, please use it, otherwise follow these instructions:
 
 ```
 conda create --name clustering python=3.8
