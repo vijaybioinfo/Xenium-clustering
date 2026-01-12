@@ -362,17 +362,6 @@ setwd(outdir_sp)
       pdf(paste0("Elbow_", clustering_pct, "pct_", clustering_per_pcs, "pcs.pdf"), width=10, height=5)
       print(ElbowPlot(object = xenium.obj, ndim=clustering_per_pcs, reduction="pca") + geom_vline(xintercept = clustering_per_pcs, linetype="dotted", color = "red", size=1.5) + xlim(0,30) + ylim(1,5))
       dev.off()
-
-      n_neis <- if(!is.null(config$dim_reduction$umap)) unique(config$dim_reduction$umap$n.neighbors)
-
-      xenium.obj <- RunUMAP(xenium.obj, 
-        reduction = config$dim_reduction$base$type,
-        dims = 1:clustering_per_pcs, 
-        n.neighbors = n_neis,
-        min.dist = config$dim_reduction$umap$min.dist,
-        verbose = opt$verbose); timestamp()
-
-      if(opt$verbose) cat("Resolutions:", paste0(config$resolution, collapse = ", "), "\n")
       
       xenium.obj <- FindNeighbors(xenium.obj, 
       reduction = config$dim_reduction$base$type, dims = 1:clustering_per_pcs, 
@@ -384,6 +373,17 @@ setwd(outdir_sp)
         verbose = opt$verbose #, 
         # algorithm =  4 ### For leiden clustering !!! Modify after run
         )
+    
+      n_neis <- if(!is.null(config$dim_reduction$umap)) unique(config$dim_reduction$umap$n.neighbors)
+
+      xenium.obj <- RunUMAP(xenium.obj, 
+        reduction = config$dim_reduction$base$type,
+        dims = 1:clustering_per_pcs, 
+        n.neighbors = n_neis,
+        min.dist = config$dim_reduction$umap$min.dist,
+        verbose = opt$verbose); timestamp()
+
+      if(opt$verbose) cat("Resolutions:", paste0(config$resolution, collapse = ", "), "\n")
 
 
       global_resolution <- paste0(clustering_per_pcts_num, "pct", clustering_per_pcs_num, "pc_qc")
