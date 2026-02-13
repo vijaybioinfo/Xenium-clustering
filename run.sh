@@ -40,14 +40,14 @@ function read_yaml(){
 
 # CONFIG_FILE=/home/fcastaneda/bin/spatial_clustering/config.yaml
 
-OUTPUT_DIR="$(read_yaml ${CONFIG_FILE} output_dir)"
-PROJECT_NAME="$(read_yaml ${CONFIG_FILE} project_name)"
+OUTPUT_DIR="$(read_yaml ${CONFIG_FILE} output_dir | xargs)"
+PROJECT_NAME="$(read_yaml ${CONFIG_FILE} project_name | xargs)"
 OUTPUT_DIR="${OUTPUT_DIR%/}/${PROJECT_NAME}"
-PIPELINE_FOLDER="$(read_yaml ${CONFIG_FILE} pipeline)"
+PIPELINE_FOLDER="$(read_yaml ${CONFIG_FILE} pipeline | xargs)"
 CONDA_ENV="$(read_yaml ${CONFIG_FILE} conda_env)"
 R_MODULE="$(read_yaml ${CONFIG_FILE} R_module)"
 CLUSTER_CONFIG="$(read_yaml ${CONFIG_FILE} cluster_config)"
-PROJECT_NAME="$(read_yaml ${CONFIG_FILE} project_name)"
+PROJECT_NAME="$(read_yaml ${CONFIG_FILE} project_name | xargs)"
 
 
 if [[ -v R_MODULE ]]; then module load $R_MODULE; else echo "Using default R"; fi
@@ -58,10 +58,10 @@ echo "Output path: ${OUTPUT_DIR}"
 
 if [[ ! -d "${OUTPUT_DIR}" ]]; then mkdir --parents "${OUTPUT_DIR}"; fi
 if [[ ! -d "${OUTPUT_DIR}/scripts" ]]; then mkdir "${OUTPUT_DIR}/scripts"; fi
+
 cd ${OUTPUT_DIR}
 
 # rm -r "${OUTPUT_DIR}/scripts/*" # Is this necessary?
-
 cp -r ${PIPELINE_FOLDER}/slurm .
 
 if [[ $(wc -l $CLUSTER_CONFIG) > 0 ]]; then 
@@ -73,9 +73,10 @@ fi
 cp $CONFIG_FILE config.yaml
 # conda activate $CONDA_ENV
 
-JOBFILE="${OUTPUT_DIR}/scripts/clump_${PROJECT_NAME}"
+#JOBFILE="${OUTPUT_DIR}/scripts/clump_${PROJECT_NAME}"
+JOBFILE="$(echo "${OUTPUT_DIR}/scripts/clump_${PROJECT_NAME}" | xargs)"
 
-cp /home/fcastaneda/bin/spatial_clustering/routine_template_emma_Slurm_Spatial_Clustering.sh ${JOBFILE}.sh # for the new HPC
+cp /mnt/bioadhoc/Groups/vd-vijay/eunil/pipelines/Xenium-clustering/routine_template_emma_Slurm_Spatial_Clustering.sh ${JOBFILE}.sh # for the new HPC
 
 sed -i 's|{cellranger}|spatial|' ${JOBFILE}.sh
 sed -i 's|{username}|'"${USER}"'|g' ${JOBFILE}.sh
@@ -89,8 +90,8 @@ sed -i 's|{PIPELINE_FOLDER}|'"${PIPELINE_FOLDER}"'|g' ${JOBFILE}.sh
 
 if [[ -v R_MODULE ]]; then sed -i 's|#module load {R_module}|module load '"${R_MODULE}"'|g' ${JOBFILE}.sh; echo "Using user defined R"; else echo "Using default R"; fi
 
-sed -i 's|#conda activate {conda_env}|conda activate '"${CONDA_ENV}"'|g' ${JOBFILE}.sh
-
+sed -i 's|#mamba activate {conda_env}|mamba activate '"${CONDA_ENV}"'|g' ${JOBFILE}.sh
+sed -i 's|conda run -n {conda_env}|conda run -n '"${CONDA_ENV}"'|g' ${JOBFILE}.sh
 sed -i 's|cp ${PROJ.*|cp -r ${PROJDIR}/. ./|g' ${JOBFILE}.sh # to copy everything to scratch
 sed -i 's|cp -R ./.*${PROJ.*|cp -r . ${PROJDIR}/|g' ${JOBFILE}.sh # copy from scratch
 

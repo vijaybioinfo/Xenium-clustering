@@ -27,7 +27,7 @@
 ######################################################################
 
 echo -----------------------------------------------------------------
-echo -n 'Job is running on node '; cat ${SLURM_NODELIST}
+echo -n "Job is running on node ${SLURM_NODELIST}"
 echo -----------------------------------------------------------------
 echo Slurm: sbacth is running on ${SLURM_SUBMIT_HOST}
 echo Slurm: originating queue is ${SLURM_JOB_PARTITION}
@@ -80,7 +80,7 @@ stagein()
 {
   source ~/.bashrc
 
-  # conda activate {env_spatial}
+  #conda activate {env_spatial}
 
   echo ' '
   echo Transferring files from server to compute node
@@ -89,8 +89,7 @@ stagein()
   mkdir --parents ${PROJDIR}
   echo Writing files in node directory ${WORKDIR}
   cd ${WORKDIR}
-  cp ${PROJDIR}/* ./
-
+  cp -rv ${PROJDIR}/* ./
   # {after_copy}
 
   echo Files in node work directory are as follows:
@@ -107,9 +106,9 @@ runprogram()
 {
   # {pre_routine}
   # {routine_params}
-   #module load {R_module}
-   #conda activate {conda_env}
-
+  #module load {R_module}
+  #mamba activate {conda_env}
+  
   snakemake --profile slurm --snakefile {PIPELINE_FOLDER}/Snakefile --stats ${PROJDIR}/scripts/snakemake.stats >& ${PROJDIR}/scripts/snakemake.log
   # # {post_routine}
 }
